@@ -1,0 +1,44 @@
+# Modified from https://github.com/external-secrets/external-secrets by NAVER Cloud Corp.
+
+suite: test crds
+templates:
+  - crds/secretstore.yaml
+tests:
+  - it: should match snapshot of default values
+    asserts:
+      - matchSnapshot: {}
+  - it: should disable conversion webhook
+    set:
+      crds.conversion.enabled: false
+    asserts:
+      - isNull:
+          path: spec.conversion
+
+  - it: should add annotations
+    set:
+      crds:
+        annotations:
+          foo: bar
+          baz: bang
+    asserts:
+      - equal:
+          path: metadata.annotations.foo
+          value: bar
+      - equal:
+          path: metadata.annotations.baz
+          value: bang
+
+  - it: should keep the CRD on uninstall by default
+    asserts:
+      - equal:
+          path: metadata.annotations["helm.sh/resource-policy"]
+          value: keep
+
+  - it: should drop the keep policy when it is set to null
+    set:
+      crds:
+        annotations:
+          helm.sh/resource-policy: null
+    asserts:
+      - notExists:
+          path: metadata.annotations["helm.sh/resource-policy"]

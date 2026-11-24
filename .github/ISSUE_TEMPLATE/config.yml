@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Upstream External Secrets Operator issues
+    url: https://github.com/external-secrets/external-secrets/issues
+    about: Problems in providers other than ncloud, or in the controllers and APIs shared with upstream.
+  - name: NAVER Cloud Platform support
+    url: https://www.ncloud.com/support/question/general
+    about: Questions about Secret Manager, Ncloud Kubernetes Service or your account.

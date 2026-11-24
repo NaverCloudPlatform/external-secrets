@@ -1,0 +1,28 @@
+# Modified from https://github.com/external-secrets/external-secrets by NAVER Cloud Corp.
+
+# This version of Dockerfile is for building without external dependencies.
+# Build a multi-platform image e.g. `docker buildx build --push --platform linux/arm64,linux/amd64 --tag external-secrets:dev --file Dockerfile.standalone .`
+# Pinned release: golang:1.27.4-alpine (Go; tracking 1.x on Alpine)
+FROM golang@sha256:0a5f7fe796599ff487605987432e7619ae45beeb2fba4c2ce0b907879932aebf AS builder
+# Add metadata
+LABEL maintainer="NAVER Cloud NKS Team" \
+      description="External Secrets Operator with the NAVER Cloud Secret Manager provider (fork of external-secrets/external-secrets)"
+ARG TARGETOS
+ARG TARGETARCH
+# The providers to compile in, as the Makefile's PROVIDER: without a tag the
+# binary registers no ncloud provider.
+ARG PROVIDER=all_providers
+ENV CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH}
+WORKDIR /app
+COPY . /app/
+RUN go mod download
+RUN go build -tags "${PROVIDER}" -o external-secrets main.go
+
+# Pinned release: gcr.io/distroless/static-debian13:latest (Distroless static; Debian 13)
+FROM gcr.io/distroless/static@sha256:034df5c1737e8241f6ed6423a12e720ee0f6d6f088609ee172f98f6f2166ef5d AS app
+COPY --from=builder /app/external-secrets /bin/external-secrets
+
+# Run as UID for nobody
+USER 65534
+
+ENTRYPOINT ["/bin/external-secrets"]

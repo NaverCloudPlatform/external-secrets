@@ -1,0 +1,60 @@
+# Modified from https://github.com/external-secrets/external-secrets by NAVER Cloud Corp.
+
+# One rule per header kind. Upstream's files, including the ones this fork
+# modifies, keep upstream's header; the source files this fork adds carry
+# NAVER Cloud's, as NAVER Cloud's other public repositories do. A new
+# fork-owned Go path goes in both lists: the first ignores it, the second
+# checks it. The first covers only Go, so a fork-owned script goes in the
+# second alone.
+header:
+  - license:
+      # Goal:
+      #  // Copyright © The ESO Authors
+      #  // SPDX-License-Identifier: Apache-2.0
+      content: |
+        /*
+        Copyright © The ESO Authors
+
+        Licensed under the Apache License, Version 2.0 (the "License");
+        you may not use this file except in compliance with the License.
+        You may obtain a copy of the License at
+
+            https://www.apache.org/licenses/LICENSE-2.0
+
+        Unless required by applicable law or agreed to in writing, software
+        distributed under the License is distributed on an "AS IS" BASIS,
+        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+        See the License for the specific language governing permissions and
+        limitations under the License.
+        */
+
+    paths:
+      - "**/*.go"
+    paths-ignore:
+      - "runtime/template/v2/pem_chain.go"
+      - "runtime/template/v2/sprig/**"
+      - "providers/v1/ncloud/**"
+      - "apis/externalsecrets/v1/secretstore_ncloud_types.go"
+      - "apis/externalsecrets/v1beta1/secretstore_ncloud_types.go"
+      - "pkg/register/ncloud.go"
+      - "cmd/controller/ncloud_flag_test.go"
+      - "pkg/controllers/ncloudlive/**"
+
+    comment: on-failure
+
+  - license:
+      content: |
+        External Secrets Operator for NAVER Cloud Platform
+        Copyright (c) 2026-present NAVER Cloud Corp.
+        Apache-2.0
+
+    paths:
+      - "providers/v1/ncloud/**/*.go"
+      - "apis/externalsecrets/v1/secretstore_ncloud_types.go"
+      - "apis/externalsecrets/v1beta1/secretstore_ncloud_types.go"
+      - "pkg/register/ncloud.go"
+      - "cmd/controller/ncloud_flag_test.go"
+      - "pkg/controllers/ncloudlive/**/*.go"
+      - "hack/helm.package-release.sh"
+
+    comment: on-failure

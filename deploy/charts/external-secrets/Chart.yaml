@@ -1,0 +1,24 @@
+# Modified from https://github.com/external-secrets/external-secrets by NAVER Cloud Corp.
+
+apiVersion: v2
+name: external-secrets
+description: External secrets management for Kubernetes
+type: application
+version: "2.13.0"
+appVersion: "v2.13.0"
+kubeVersion: ">= 1.19.0-0"
+keywords:
+  - kubernetes-external-secrets
+  - secrets
+home: https://github.com/NaverCloudPlatform/external-secrets
+sources:
+  - https://github.com/NaverCloudPlatform/external-secrets
+  - https://github.com/external-secrets/external-secrets
+icon: https://raw.githubusercontent.com/external-secrets/external-secrets/main/assets/eso-logo-large.png
+maintainers:
+  - name: NAVER Cloud NKS Team
+dependencies:
+  - name: bitwarden-sdk-server
+    version: v0.6.0
+    repository: oci://ghcr.io/external-secrets/charts
+    condition: bitwarden-sdk-server.enabled
